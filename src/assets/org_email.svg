@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0071f2;
+      }
+    </style>
+  </defs>
+  <path id="Email_id" data-name="Email id" class="cls-1" d="M3.2,4A1.376,1.376,0,0,0,2,5.5v9A1.376,1.376,0,0,0,3.2,16h9.6A1.376,1.376,0,0,0,14,14.5v-9A1.376,1.376,0,0,0,12.8,4Zm0,1.5h9.6v.751L8,10,3.2,6.251Zm0,2.251L8,11.5l4.8-3.749V14.5H3.2Z" transform="translate(-2 -4)"/>
+</svg>

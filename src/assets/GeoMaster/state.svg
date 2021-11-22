@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <g id="icons8-parliament" transform="translate(-2 -2)">
+    <path id="Path_93301" data-name="Path 93301" d="M17,3V4a1,1,0,0,1-1,1H13a1,1,0,0,1-1-1V3a1,1,0,0,1,1-1h3A1,1,0,0,1,17,3Z" transform="translate(4)" fill="#0071f2"/>
+    <path id="Path_93302" data-name="Path 93302" d="M24.1,18.529H21.5V13.118a1.354,1.354,0,0,0,0-2.706h-.127a6.458,6.458,0,0,0-12.745,0H8.5a1.354,1.354,0,0,0,0,2.706v5.412H5.9A3.982,3.982,0,0,0,2,22.588V28H28V22.588A3.982,3.982,0,0,0,24.1,18.529Z" fill="#0071f2" opacity="0.35"/>
+    <rect id="Rectangle_47181" data-name="Rectangle 47181" width="2" height="3" transform="translate(22 23)" fill="#0071f2"/>
+    <rect id="Rectangle_47182" data-name="Rectangle 47182" width="2" height="4" transform="translate(19.333 14.375)" fill="#0071f2"/>
+    <rect id="Rectangle_47183" data-name="Rectangle 47183" width="2" height="4" transform="translate(8.667 14.375)" fill="#0071f2"/>
+    <rect id="Rectangle_47184" data-name="Rectangle 47184" width="2" height="4" transform="translate(14 14.375)" fill="#0071f2"/>
+    <rect id="Rectangle_47185" data-name="Rectangle 47185" width="2" height="3" transform="translate(16.667 23)" fill="#0071f2"/>
+    <rect id="Rectangle_47186" data-name="Rectangle 47186" width="2" height="3" transform="translate(11.333 23)" fill="#0071f2"/>
+    <rect id="Rectangle_47187" data-name="Rectangle 47187" width="2" height="3" transform="translate(6 23)" fill="#0071f2"/>
+  </g>
+</svg>

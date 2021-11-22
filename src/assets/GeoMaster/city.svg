@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="26.667" viewBox="0 0 24 26.667">
+  <g id="icons8-city" transform="translate(-3 -2)">
+    <path id="Path_93298" data-name="Path 93298" d="M21.875,11.333v-8a1.376,1.376,0,0,0-2.75,0V4L11.2,2.08A2.815,2.815,0,0,0,10.537,2H9.5A2.709,2.709,0,0,0,6.75,4.667V14H5.375A1.355,1.355,0,0,0,4,15.333V28.667H21.875V27.333H26v-16Z" fill="#0071f2" opacity="0.35"/>
+    <path id="Path_93299" data-name="Path 93299" d="M19,7H17v3h2v2H17v2h2v2H17v2h2v2H17v2h4V9A2,2,0,0,0,19,7Z" transform="translate(6 6.667)" fill="#0071f2"/>
+    <path id="Path_93300" data-name="Path 93300" d="M13,10H5a2,2,0,0,0-2,2V22H15V12A2,2,0,0,0,13,10ZM8,22H5V20H8Zm0-4H5V16H8Zm5,4H10V20h3Zm0-4H10V16h3ZM8,14H5V12H8Zm5,0H10V12h3Z" transform="translate(0 6.667)" fill="#0071f2"/>
+    <rect id="Rectangle_47179" data-name="Rectangle 47179" width="2" height="2" transform="translate(9.875 7.481)" fill="#0071f2"/>
+    <rect id="Rectangle_47180" data-name="Rectangle 47180" width="2" height="2" transform="translate(16.75 7.481)" fill="#0071f2"/>
+  </g>
+</svg>

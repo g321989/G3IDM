@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11.922" height="12" viewBox="0 0 11.922 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0071f2;
+      }
+    </style>
+  </defs>
+  <path id="Level" class="cls-1" d="M11.61,3,8.3,6.333h2.649V7.666A6.01,6.01,0,0,1,9.2,11.912a5.931,5.931,0,0,1-4.218,1.754H3V15H4.987a7.319,7.319,0,0,0,7.286-7.334V6.333h2.649Z" transform="translate(-3 -3)"/>
+</svg>

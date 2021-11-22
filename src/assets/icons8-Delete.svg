@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.22" height="15.8" viewBox="0 0 14.22 15.8">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #707070;
+      }
+    </style>
+  </defs>
+  <path id="icons8-Delete_" data-name="icons8-Delete " class="cls-1" d="M8.53,2l-.79.79H3V4.37h.876L5.285,16.422v.006A1.589,1.589,0,0,0,6.851,17.8h6.516a1.589,1.589,0,0,0,1.566-1.372l0-.006L16.343,4.37h.876V2.79H12.48L11.69,2ZM5.469,4.37h9.282L13.367,16.22H6.851Z" transform="translate(-3 -2)"/>
+</svg>
