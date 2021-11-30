@@ -38,7 +38,7 @@ import { ContactSupportOutlined } from "@material-ui/icons";
 import Tree from "../../../components/tree";
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "primary_care_admin_binder";
+import { actions } from "idm_binder";
 import { v4 as uuidV4 } from 'uuid'
 
 

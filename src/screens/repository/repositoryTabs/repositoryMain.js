@@ -25,7 +25,7 @@ import DeleteComponent from "./deleteComp";
 // import TreeViewComponent from "./orgAccess";
 import Tree from "../../../components/tree";
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "primary_care_admin_binder";
+import { actions } from "idm_binder";
 
 
 

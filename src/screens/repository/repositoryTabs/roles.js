@@ -41,7 +41,7 @@ import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
 import Tree from "../../../components/tree";
 // import { Text } from "qdm-component-library";
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "primary_care_admin_binder";
+import { actions } from "idm_binder";
 const IOSSwitch = withStyles((theme) => ({
   root: {
     width: 28,
@@ -473,7 +473,7 @@ function Roles(props) {
     let permissionProperties ={
       "_id": "",
       "id": 0,
-      "role_id": "",
+      "role_id": 0,
       "permission": {
         orgAccess:roleDetails?.orgAccess ?? [],
         permission:roleDetails?.permission ?? []
