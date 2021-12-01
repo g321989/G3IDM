@@ -13,7 +13,7 @@ import Roles from "./repositoryTabs/roles";
 
 import RepositoryMain from "./repositoryTabs/repositoryMain";
 import PermissionList from "./repositoryTabs/permissionList";
-
+import Users from './repositoryTabs/users'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,7 +167,18 @@ function Repository(props) {
                     label="Roles"
                     {...a11yProps(3)}
                   />
-                  
+                  <Tab
+                    style={{
+                      fontSize: "12px",
+                      textTransform: "unset",
+                      fontFamily: "poppinsemibold",
+                      paddingLeft: "0px",
+                      paddingRight: "0px",
+                      marginLeft: "20px",
+                    }}
+                    label="Users"
+                    {...a11yProps(4)}
+                  />
                 </Tabs>
               </AppBar>
             </div>
@@ -190,6 +201,13 @@ function Repository(props) {
                 style={{ borderRadius: "10px", width: "99%", padding: "0px" }}
               >
                 <Roles />
+              </div>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              <div
+                style={{ borderRadius: "10px", width: "99%", padding: "0px" }}
+              >
+                <Users />
               </div>
             </TabPanel>
           </div>

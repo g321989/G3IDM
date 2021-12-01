@@ -42,6 +42,8 @@ import Tree from "../../../components/tree";
 // import { Text } from "qdm-component-library";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "idm_binder";
+import { v4 as uuidV4 } from 'uuid'
+
 const IOSSwitch = withStyles((theme) => ({
   root: {
     width: 28,
@@ -324,6 +326,7 @@ function Roles(props) {
       const { alert } = props;
       let { setSnack } = alert;
      let role_list  =  await dispatch(actions.ROLE_READ());
+     debugger;
      if(role_list?.payload?.error ){
       setLoader(false)
       setSnack({
@@ -337,7 +340,10 @@ function Roles(props) {
       return;
      }
      setLoader(false)
+     if(role_list?.payload?.data?.length>0){
       setUpdatePermissionRole(role_list?.payload?.data[0]);
+
+     }
     }catch(error){
 
     }
@@ -461,18 +467,18 @@ function Roles(props) {
           "code": roleDetails.role_id,
           "display":roleDetails.role_name ,
           "userSelected": true,
-          "id": 0,
+          "id": uuidV4(),
           "Type": "PRACTROLE",
           "shortdesc": ""
         }
       ],
-      "id": 0,
+      "id": uuidV4(),
       "Type": "PRACTROLE",
       "status": true
     }
     let permissionProperties ={
       "_id": "",
-      "id": 0,
+      "id": uuidV4(),
       "role_id": 0,
       "permission": {
         orgAccess:roleDetails?.orgAccess ?? [],
