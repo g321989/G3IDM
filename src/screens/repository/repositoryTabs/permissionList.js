@@ -40,6 +40,7 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "idm_binder";
 import { v4 as uuidV4 } from 'uuid'
+import { withRouter } from "react-router";
 
 
 const IOSSwitch = withStyles((theme) => ({
@@ -106,12 +107,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+
 
 const togArray = [];
 
@@ -171,8 +167,10 @@ function PermissionList(props) {
       setOpen(false);
       return;
     }
+    
     let list = {
-      
+      dbname:sessionStorage.dbname,
+      metadataId:sessionStorage.entity_metadata_id,
       _id:deleteId
     };
 
@@ -206,6 +204,9 @@ function PermissionList(props) {
   const handlePermissionStatus = async (event, item) => {
       // console.log(JSON.stringify(item));
       let list = {
+        dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
+
         is_active: !item?.is_active,
         _key:item._key
       };
@@ -357,10 +358,15 @@ function PermissionList(props) {
     return str;
   }
   const setInitialize = async() =>{
+    debugger;
     try{
       const { alert } = props;
       let { setSnack } = alert;
-      let repo_list = await   dispatch(actions.REPOSITORY_READ_DOCUMENT());
+      let dbname = {
+         dbname:sessionStorage.dbname
+
+      }
+      let repo_list = await dispatch(actions.REPOSITORY_READ_DOCUMENT(dbname));
       if(repo_list?.payload?.error ){
         setLoader(false)
         // setSnack({
@@ -375,7 +381,7 @@ function PermissionList(props) {
        }
        let constructJSON = constructionTree(repo_list?.payload?.data[0]?.project_component);
        setRepoPermission(constructJSON);
-     let permission_list  =  await dispatch(actions.PERMISSION_READ());
+     let permission_list  =  await dispatch(actions.PERMISSION_READ(dbname));
      if(permission_list?.payload?.error ){
       setLoader(false)
       // setSnack({
@@ -485,8 +491,8 @@ function PermissionList(props) {
     });
   }
   const submit  = async()=>{
-    props.backDrop.setBackDrop({
-      ...props.backDrop,
+    props.backdrop.setBackDrop({
+      ...props.backdrop,
       open: true,
       message: "processing....",
     });
@@ -514,8 +520,8 @@ function PermissionList(props) {
         ...permissionDetails,
         error
       });
-      props.backDrop.setBackDrop({
-        ...props.backDrop,
+      props.backdrop.setBackDrop({
+        ...props.backdrop,
         open: false,
         message: "",
       });
@@ -528,11 +534,16 @@ function PermissionList(props) {
       "id": uuidV4(),
       "permissionName": permissionDetails?.permission_name,
       "is_active": true,
-      "repo_mapping": permissionDetails?.repo_list
+      "repo_mapping": permissionDetails?.repo_list,
+      dbname:sessionStorage.dbname,
+      metadataId:sessionStorage.entity_metadata_id
     }
     if(permissionDetails?.select_permission && Object.keys(permissionDetails?.select_permission)?.length>0){
   
       permissionProperties ={
+         dbname:sessionStorage.dbname,
+      metadataId:sessionStorage.entity_metadata_id,
+        
         "_key":permissionDetails?.select_permission?._key,
         "permissionName": permissionDetails?.permission_name,
         // "is_active": true,
@@ -542,7 +553,7 @@ function PermissionList(props) {
     try{
       let codeUpsert =   await dispatch(actions.PERMISSION_UPSERT(permissionProperties));
       debugger;
-      if(codeUpsert?.payload?.error || !codeUpsert?.payload?.data?.Code ){
+      if(codeUpsert?.payload?.error || codeUpsert?.payload?.data?.Code  !==201 ){
         setSnack({
           ...alert,
           horizontal: "right",
@@ -551,15 +562,15 @@ function PermissionList(props) {
           severity: "error",
           vertical: "top",
         });
-        props.backDrop.setBackDrop({
-          ...props.backDrop,
+        props.backdrop.setBackDrop({
+          ...props.backdrop,
           open: false,
           message: "",
         });
         return;
       }
-      props.backDrop.setBackDrop({
-        ...props.backDrop,
+      props.backdrop.setBackDrop({
+        ...props.backdrop,
         open: false,
         message: "",
       });
@@ -572,7 +583,11 @@ function PermissionList(props) {
         vertical: "top",
       });
       setEditMode(false);
-      let permission_list  =  await dispatch(actions.PERMISSION_READ());
+      let dbname = {
+      dbname:sessionStorage.dbname
+
+      }
+      let permission_list  =  await dispatch(actions.PERMISSION_READ(dbname));
 
     } catch(error){
       setSnack({
@@ -749,8 +764,8 @@ function PermissionList(props) {
             </div>
           </div>
         </Grid>
-
-        <Grid item xs={8} style={{ overflow: "hidden" }}>
+        {
+          (permissionList?.length>0 || editMode) && <Grid item xs={8} style={{ overflow: "hidden" }}>
           <div
             style={{
               backgroundColor: "#fff",
@@ -916,6 +931,8 @@ function PermissionList(props) {
 
          
         </Grid>
+        }
+        
       </Grid>
       {/* -------------------------------- delete ----------------------------------  */}
       <DeleteComponent open={open} deleteClose={handleClose} />

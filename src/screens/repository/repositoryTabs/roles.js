@@ -43,7 +43,6 @@ import Tree from "../../../components/tree";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "idm_binder";
 import { v4 as uuidV4 } from 'uuid'
-
 const IOSSwitch = withStyles((theme) => ({
   root: {
     width: 28,
@@ -172,9 +171,14 @@ function Roles(props) {
     const { alert } = props;
     let { setSnack } = alert;
   
-      
+      let codable_params = {
+        dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
+        _key:deleteId,
+        status:false
+      }
       try{
-        let delete_data = await dispatch(actions.CODABALE_CONCEPT_UPSERT({_key:deleteId,status:false}));
+        let delete_data = await dispatch(actions.CODABALE_CONCEPT_UPSERT(codable_params));
         setOpen(false);
         if(delete_data?.payload?.error){
               setSnack({
@@ -218,7 +222,11 @@ function Roles(props) {
 
   React.useLayoutEffect(() => {
     // dispatch(actions.ROLE_READ());
-    dispatch(actions.PERMISSION_MANAGEMENT_READ())
+    let params =  {
+      dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
+    }
+    dispatch(actions.PERMISSION_MANAGEMENT_READ(params))
   }, []);
  
   //SEARCH FOR PROCESS
@@ -251,9 +259,12 @@ function Roles(props) {
   //API CALL FOR CHANGE ROLES STATUS
   const handleRoleStatus = async (event, item) => {
     // console.log(JSON.stringify(item));
+  
     let list = {
       activestatus: !item?.activestatus,
-      _key:item._key
+      _key:item._key,
+      dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
     };
 
     // let sendRoleData = {
@@ -325,7 +336,11 @@ function Roles(props) {
     try{
       const { alert } = props;
       let { setSnack } = alert;
-     let role_list  =  await dispatch(actions.ROLE_READ());
+      let params_db =  {
+        dbname:sessionStorage.dbname,
+          metadataId:sessionStorage.entity_metadata_id,
+      }
+     let role_list  =  await dispatch(actions.ROLE_READ(params_db));
      debugger;
      if(role_list?.payload?.error ){
       setLoader(false)
@@ -353,7 +368,12 @@ function Roles(props) {
     const { alert } = props;
     let { setSnack } = alert;
     try{
-      let roleManagementData =   await dispatch(actions.PERMISSION_MANAGEMENT_ROLE_READ({role_id:_role.id}));
+      let params_db =  {
+        dbname:sessionStorage.dbname,
+          metadataId:sessionStorage.entity_metadata_id,
+          role_id:_role.id
+      }
+      let roleManagementData =   await dispatch(actions.PERMISSION_MANAGEMENT_ROLE_READ(params_db));
       if(roleManagementData?.payload?.error ){
         setSnack({
           ...alert,
@@ -420,8 +440,8 @@ function Roles(props) {
     });
   }
   const submit  = async()=>{ 
-    props.backDrop.setBackDrop({
-      ...props.backDrop,
+    props.backdrop.setBackDrop({
+      ...props.backdrop,
       open: true,
       message: "Processing...",
     });
@@ -449,8 +469,8 @@ function Roles(props) {
         ...roleDetails,
         error
       });
-      props.backDrop.setBackDrop({
-        ...props.backDrop,
+      props.backdrop.setBackDrop({
+        ...props.backdrop,
         open: false,
         message: "",
       });
@@ -474,7 +494,9 @@ function Roles(props) {
       ],
       "id": uuidV4(),
       "Type": "PRACTROLE",
-      "status": true
+      "status": true,
+      dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
     }
     let permissionProperties ={
       "_id": "",
@@ -483,7 +505,9 @@ function Roles(props) {
       "permission": {
         orgAccess:roleDetails?.orgAccess ?? [],
         permission:roleDetails?.permission ?? []
-      }
+      },
+      dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
     }
     if(roleDetails?.select_role && Object.keys(roleDetails?.select_role)?.length>0){
       // codeProperties = {
@@ -501,7 +525,9 @@ function Roles(props) {
          codeProperties = {
                     ...roleDetails?.select_role?.coding[0],
                     "code": roleDetails?.role_id,
-                    "display":roleDetails?.role_name  
+                    "display":roleDetails?.role_name,
+                    dbname:sessionStorage.dbname,
+                    metadataId:sessionStorage.entity_metadata_id,  
           };
       permissionProperties ={
         _key:roleDetails?._key,
@@ -509,15 +535,17 @@ function Roles(props) {
         "permission": {
           orgAccess:roleDetails?.orgAccess ?? [],
           permission:roleDetails?.permission ?? []
-        }
+        },
+        dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
       }
     }
     if(roleDetails?.select_role && Object.keys(roleDetails?.select_role)?.length>0){
       try{
         let codeUpsert =   await dispatch(actions.CODING_UPSERT(codeProperties));
         if(codeUpsert?.payload?.error || codeUpsert?.payload?.data?.Code !== 201){
-          props.backDrop.setBackDrop({
-            ...props.backDrop,
+          props.backdrop.setBackDrop({
+            ...props.backdrop,
             open: false,
             message: "",
           });
@@ -536,8 +564,8 @@ function Roles(props) {
     
         let permissionRoleUpsert =   await dispatch(actions.PERMISSION_ROLE_UPSERT(permissionProperties));
         if(permissionRoleUpsert?.payload?.error || codeUpsert?.payload?.data?.Code !== 201){
-          props.backDrop.setBackDrop({
-            ...props.backDrop,
+          props.backdrop.setBackDrop({
+            ...props.backdrop,
             open: false,
             message: "",
           });
@@ -551,8 +579,8 @@ function Roles(props) {
           });
           return;
         }
-        props.backDrop.setBackDrop({
-          ...props.backDrop,
+        props.backdrop.setBackDrop({
+          ...props.backdrop,
           open: false,
           message: "",
         });
@@ -566,8 +594,8 @@ function Roles(props) {
         });
         setEditMode(false);
       } catch(error){
-        props.backDrop.setBackDrop({
-          ...props.backDrop,
+        props.backdrop.setBackDrop({
+          ...props.backdrop,
           open: false,
           message: "",
         });
@@ -585,8 +613,8 @@ function Roles(props) {
         let codeUpsert =   await dispatch(actions.CODABALE_CONCEPT_UPSERT(codeProperties));
         debugger;
         if(codeUpsert?.payload?.error || codeUpsert?.payload?.data?.Code !== 201){
-          props.backDrop.setBackDrop({
-            ...props.backDrop,
+          props.backdrop.setBackDrop({
+            ...props.backdrop,
             open: false,
             message: "",
           });
@@ -605,8 +633,8 @@ function Roles(props) {
         }
         let permissionRoleUpsert =   await dispatch(actions.PERMISSION_ROLE_UPSERT(permissionProperties));
         if(permissionRoleUpsert?.payload?.error || codeUpsert?.payload?.data?.Code !== 201){
-          props.backDrop.setBackDrop({
-            ...props.backDrop,
+          props.backdrop.setBackDrop({
+            ...props.backdrop,
             open: false,
             message: "",
           });
@@ -620,8 +648,8 @@ function Roles(props) {
           });
           return;
         }
-        props.backDrop.setBackDrop({
-          ...props.backDrop,
+        props.backdrop.setBackDrop({
+          ...props.backdrop,
           open: false,
           message: "",
         });
@@ -636,8 +664,8 @@ function Roles(props) {
         setEditMode(false);
   
       } catch(error){
-        props.backDrop.setBackDrop({
-          ...props.backDrop,
+        props.backdrop.setBackDrop({
+          ...props.backdrop,
           open: false,
           message: "",
         });
@@ -651,7 +679,11 @@ function Roles(props) {
         });
       }
     }
-    await dispatch(actions.ROLE_READ());
+    let params_db ={
+      dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
+    }
+    await dispatch(actions.ROLE_READ(params_db));
     
   }
   const addRole = () =>{
@@ -846,7 +878,8 @@ function Roles(props) {
             </div>
           </div>
         </Grid>
-        <Grid item xs={8}>
+        {
+          (roleList?.length>0 || editMode)  && <Grid item xs={8}>
           <div
             style={{
               backgroundColor: "#fff",
@@ -1083,6 +1116,8 @@ function Roles(props) {
             )}
           </div>
         </Grid>
+        }
+        
       </Grid>
       {/* -------------------------------- delete ----------------------------------  */}
       <DeleteComponent

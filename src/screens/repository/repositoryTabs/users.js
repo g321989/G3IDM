@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import styles from "./styles";
 import { withAllContexts } from "../../../HOCs";
 import EditIcon from "../../../assets/icons - Edit.svg";
-import DeleteIcon from "../../../assets/icons8-trash.svg";
+// import DeleteIcon from "../../../assets/icons8-trash.svg";
 import { withStyles } from "@material-ui/core/styles";
 import searchicon from "../../../assets/icons - Search.svg";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions } from "idm_binder";
 import { v4 as uuidV4 } from 'uuid'
 import { addUserToKeyClock } from "../../../function/commonapi";
-
+import { AlertProps } from '../../../utils/constants';
 
 // action switch component
 const IOSSwitch = withStyles((theme) => ({
@@ -98,7 +98,7 @@ TabPanel.propTypes = {
 };
 // end
 
-const togArray = [];
+// const togArray = [];
 
 // user component
 function Users(props) {
@@ -108,47 +108,47 @@ function Users(props) {
 
     // use states
     const [value, setValue] = React.useState(0);
-    const [state, setState] = useState({
-        statusActive: [],
-        active: null,
-        secondSection: "Pages",
-        permissionPage: {},
-    });
+    // const [state, setState] = useState({
+    //     statusActive: [],
+    //     active: null,
+    //     secondSection: "Pages",
+    //     permissionPage: {},
+    // });
     const [editMode, setEditMode] = useState(false);
 
-    const [json, setJson] = useState({
-        permissionID: "",
-        permissionNam: "",
-        tabName: "Pages",
-        Pages: [],
-        Forms: [],
-        Reports: [],
-        Processes: [],
-    });
+    // const [json, setJson] = useState({
+    //     permissionID: "",
+    //     permissionNam: "",
+    //     tabName: "Pages",
+    //     Pages: [],
+    //     Forms: [],
+    //     Reports: [],
+    //     Processes: [],
+    // });
 
-    const [permissionData, setPermissionData] = useState([]);
-    const [permissionData1, setPermissionData1] = useState([]);
+    // const [permissionData, setPermissionData] = useState([]);
+    // const [permissionData1, setPermissionData1] = useState([]);
     const [loader, setLoader] = useState(true);
-    const [pageData, setPageData] = useState([]);
-    const [formRepData, setFromRepData] = useState([]);
-    const [reportsData, setReportsData] = useState([]);
-    const [processData, setprocessData] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [deleteId, setDeleteId] = useState("");
-    const [btnJson, setBtnJson] = useState({
-        create: false,
-        read: false,
-        update: false,
-        delete: false,
-    });
-    const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+    // const [pageData, setPageData] = useState([]);
+    // const [formRepData, setFromRepData] = useState([]);
+    // const [reportsData, setReportsData] = useState([]);
+    // const [processData, setprocessData] = useState([]);
+    // const [open, setOpen] = useState(false);
+    // const [deleteId, setDeleteId] = useState("");
+    // const [btnJson, setBtnJson] = useState({
+    //     create: false,
+    //     read: false,
+    //     update: false,
+    //     delete: false,
+    // });
+    // const [, forceUpdate] = React.useReducer(x => x + 1, 0);
 
     // end
 
-    const handleClickOpen = (item) => {
-        setDeleteId(item?._id);
-        setOpen(true);
-    };
+    // const handleClickOpen = (item) => {
+    //     setDeleteId(item?._id);
+    //     setOpen(true);
+    // };
 
   
 
@@ -156,22 +156,48 @@ function Users(props) {
     const handlePermissionStatus = async (event, item) => {
         let list = {
             active: !item?.active,
-            _key: item._key
+            _key: item._key,
+            dbname:sessionStorage.dbname,
+              metadataId:sessionStorage.entity_metadata_id,
         };
-
+        let params_db ={
+            dbname:sessionStorage.dbname,
+              metadataId:sessionStorage.entity_metadata_id,
+          }
         debugger;
         try {
             let delete_data = await dispatch(actions.PERSON_UPSERT(list));
             if (delete_data?.payload?.error || delete_data?.payload?.data?.Code !== 201) {
-                handleAlerts("User status changed unsuccessfully!", false);
+                props.alert.setSnack({
+                    ...alert,
+                    horizontal: "right",
+                    msg: "User status changed unsuccessfully!" ,
+                    open: true,
+                    severity: "error",
+                    vertical: "top",
+                });
                 return;
             }
-            let permission_list = await dispatch(actions.PERSON_READ());
-
-            handleAlerts("User status changed successfully!", true);
+            let permission_list = await dispatch(actions.PERSON_READ(params_db));
+            props.alert.setSnack({
+                ...alert,
+                horizontal: "right",
+                msg: "User status changed successfully!" ,
+                open: true,
+                severity: "success",
+                vertical: "top",
+            });
+           
 
         } catch (error) {
-            handleAlerts("User status changed unsuccessfully!", false);
+            props.alert.setSnack({
+                ...alert,
+                horizontal: "right",
+                msg: "User status changed unsuccessfully!" ,
+                open: true,
+                severity: "error",
+                vertical: "top",
+            });
 
         }
     };
@@ -189,24 +215,24 @@ function Users(props) {
     };
 
 
-    const handleAlerts = (message, status) => {
-        const { alert } = props;
-        let { setSnack } = alert;
-        setSnack({
-            ...alert,
-            horizontal: "right",
-            msg: message,
-            autoHideDuration: 6000,
-            open: true,
-            severity: status ? "success" : "error",
-            vertical: "top",
-        });
-    };
+    // const handleAlerts = (message, status) => {
+    //     const { alert } = props;
+    //     let { setSnack } = alert;
+    //     setSnack({
+    //         ...alert,
+    //         horizontal: "right",
+    //         msg: message,
+    //         autoHideDuration: 6000,
+    //         open: true,
+    //         severity: status ? "success" : "error",
+    //         vertical: "top",
+    //     });
+    // };
 
 
     const drawerOpen = () => {
         setEditMode(true);
-        console.log(permissionDetails);
+        // console.log(permissionDetails);
         debugger;
 
         setPermissionDetails({
@@ -230,10 +256,10 @@ function Users(props) {
     };
 
 
-    const [datalist, setdatalist] = useState({
-        data: [],
-        master: [],
-    });
+    // const [datalist, setdatalist] = useState({
+    //     data: [],
+    //     master: [],
+    // });
 
 
     // Handle Detail Permission Edit
@@ -282,13 +308,17 @@ function Users(props) {
     const setInitialize = async () => {
         try {
             debugger;
-            let repo_list = await dispatch(actions.ROLE_READ());
+            let params_db ={
+                dbname:sessionStorage.dbname,
+                  metadataId:sessionStorage.entity_metadata_id,
+              }
+            let repo_list = await dispatch(actions.ROLE_READ(params_db));
             if (repo_list?.payload?.error) {
                 setLoader(false)
                 return;
             }
             let roleMaster = [];
-            if(repo_list?.payload?.data?.length>0){
+            if(repo_list?.payload?.data && repo_list?.payload?.data?.length>0){
                 roleMaster = repo_list?.payload.data.map(_=>{
                     return{
                         ..._,
@@ -302,15 +332,22 @@ function Users(props) {
             //     roleMaster:roleMaster
             // });
             // forceUpdate();
-            let permission_list = await dispatch(actions.PERSON_READ());
+            let permission_list = await dispatch(actions.PERSON_READ(params_db));
             if (permission_list?.payload?.error) {
                 setLoader(false)
                 return;
             }
             setLoader(false)
-            if(permission_list?.payload?.data?.length>0){
+            debugger;
+            if(permission_list?.payload?.data && permission_list?.payload?.data?.length>0){
                 setUpdatePermission(permission_list?.payload?.data[0],'',roleMaster);
 
+            } else {
+                setPermissionDetails({
+                    ...permissionDetails,
+                    roleMaster
+                   
+                });
             }
         } catch (error) {
         }
@@ -382,17 +419,25 @@ function Users(props) {
     const handleState = (name, value) => {
         let error = permissionDetails.error;
         let errorMsg = permissionDetails.errorMsg;
-        if (typeof value === 'object' && value?.length <= 0) {
+        if (typeof value === 'object' &&  Array.isArray(value) && value?.length <= 0) {
             error[name] = true;
+        }else if(typeof value === 'object' && !Array.isArray(value) && Object.keys(value)?.length<=0){
+            error[name] = true;
+
         } else if (typeof value === 'string' && value?.length <= 0) {
             error[name] = true;
-
-        } else {
-            if (name === 'email' && findDuplicate(value)) {
-                error[name] = true;
+            if(name === 'email'){
+                errorMsg[name]='Please Enter The Field';
 
             }
-            error[name] = false;
+        } else {
+            if (name === 'email' && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) ) {
+                error[name] = true;
+                errorMsg[name]='Please Enter Valid Email Id'
+            } else{
+             error[name] = false;
+
+            }
         }
         setPermissionDetails({
             ...permissionDetails,
@@ -402,8 +447,8 @@ function Users(props) {
         });
     }
     const submit = async () => {
-        props.backDrop.setBackDrop({
-            ...props.backDrop,
+        props.backdrop.setBackDrop({
+            ...props.backdrop,
             open: true,
             message: "processing....",
         });
@@ -411,18 +456,36 @@ function Users(props) {
         let keys = Object.keys(error);
         const { alert } = props;
         let { setSnack } = alert;
+        debugger;
         keys.map((_) => {
-            if (typeof permissionDetails[_] === 'object' && permissionDetails[_]?.length <= 0) {
+        debugger;
+
+            if (typeof permissionDetails[_] === 'object' && Array.isArray(permissionDetails[_]) && permissionDetails[_]?.length <= 0) {
                 error[_] = true;
-            } else if (typeof permissionDetails[_] === 'string' && permissionDetails[_]?.length <= 0) {
+            } else if(typeof permissionDetails[_] === 'object' && !Array.isArray(permissionDetails[_]) && Object.keys(permissionDetails[_])?.length<=0){
                 error[_] = true;
+
+            }
+            else if (typeof permissionDetails[_] === 'string' && permissionDetails[_]?.length <= 0) {
+                error[_] = true;
+                if(name === 'email'){
+                    errorMsg[name]='Please Enter The Field';
+    
+                }
             } else {
-                if (_ === 'email' && findDuplicate(value)) {
+                if (_ === 'email' && findDuplicate(permissionDetails[_])) {
                     errorMsg[_] = 'This field must be unique';
                     error[_] = true;
 
                 }
-                error[_] = false;
+                if(_ === 'email'&& !error[_] && !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(permissionDetails[_])){
+                    errorMsg[_] = 'Please enter valid Email Id';
+                    error[_] = true;
+                }
+                else{
+                    error[_] = false;
+       
+                   }
             }
         });
 
@@ -432,15 +495,15 @@ function Users(props) {
                 ...permissionDetails,
                 error
             });
-            props.backDrop.setBackDrop({
-                ...props.backDrop,
+            props.backdrop.setBackDrop({
+                ...props.backdrop,
                 open: false,
                 message: "",
             });
             return;
         }
     let   keyclockError = false;
-    if(permissionDetails?.selectUser?._id){
+    if(!permissionDetails?.selectUser?._id){
         let addUserKeyClock = await addUserToKeyClock( "", permissionDetails?.email)
         .then((res) => {
          if (res?.data?.Code === 201) {
@@ -473,8 +536,8 @@ function Users(props) {
     }
     
     if(keyclockError){
-      props.backDrop.setBackDrop({
-        ...props.backDrop,
+      props.backdrop.setBackDrop({
+        ...props.backdrop,
         open: false,
         message: "",
       });
@@ -488,7 +551,9 @@ function Users(props) {
             "active": true,
             "username": permissionDetails?.username,
             "designation": permissionDetails?.designation,
-            "roleid": permissionDetails?.role?.value
+            "roleid": permissionDetails?.role?.value,
+            dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
         }
         if (permissionDetails?.selectUser && Object.keys(permissionDetails?.selectUser)?.length > 0) {
 
@@ -497,7 +562,9 @@ function Users(props) {
                 "email": permissionDetails?.email,
                 "username": permissionDetails?.username,
                 "designation": permissionDetails?.designation,
-                "roleid": permissionDetails?.role?.value
+                "roleid": permissionDetails?.role?.value,
+                dbname:sessionStorage.dbname,
+        metadataId:sessionStorage.entity_metadata_id,
             }
         }
         try {
@@ -512,15 +579,15 @@ function Users(props) {
                     severity: "error",
                     vertical: "top",
                 });
-                props.backDrop.setBackDrop({
-                    ...props.backDrop,
+                props.backdrop.setBackDrop({
+                    ...props.backdrop,
                     open: false,
                     message: "",
                 });
                 return;
             }
-            props.backDrop.setBackDrop({
-                ...props.backDrop,
+            props.backdrop.setBackDrop({
+                ...props.backdrop,
                 open: false,
                 message: "",
             });
@@ -533,8 +600,11 @@ function Users(props) {
                 vertical: "top",
             });
             setEditMode(false);
-       
-            let permission_list = await dispatch(actions.PERSON_READ());
+            let params_db ={
+                dbname:sessionStorage.dbname,
+                  metadataId:sessionStorage.entity_metadata_id,
+              }
+            let permission_list = await dispatch(actions.PERSON_READ(params_db));
 
         } catch (error) {
             setSnack({
@@ -572,7 +642,7 @@ function Users(props) {
                                 >
                                     {loader
                                         ? "User"
-                                        : permissionList.length + " Users"}
+                                        : permissionList?.length ?? 0 + " Users"}
                                 </Typography>
                                 <div style={{ flexGrow: 1 }}></div>
 
@@ -693,202 +763,205 @@ function Users(props) {
                     </div>
                 </Grid>
 
-                <Grid item xs={8} style={{ overflow: "hidden" }}>
-                    <div
-                        style={{
-                            backgroundColor: "#fff",
-                            borderRadius: "10px",
-                            border: "1px solid #DCDCDC",
-                        }}
-                    >
-                        {!editMode && (
-                            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                                <Grid item>
-                                    <Typography
-                                        className={classes.numbersEdit}
-                                        style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        Username
-                                    </Typography>
-                                    <Typography
-                                    className={classes.numbersEdit}
-                                    style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        {permissionDetails?.username ?? '---'}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography
-                                        className={classes.numbersEdit}
-                                        style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        Email
-                                    </Typography>
-                                    <Typography
-                                    className={classes.numbersEdit}
-                                    style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        {permissionDetails?.email ?? '---'}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography
-                                        className={classes.numbersEdit}
-                                        style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        Designation
-                                    </Typography>
-                                    <Typography
-                                    className={classes.numbersEdit}
-                                    style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        {permissionDetails?.designation ?? '---'}
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography
-                                        className={classes.numbersEdit}
-                                        style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        Role name
-                                    </Typography>
-                                    <Typography
-                                    className={classes.numbersEdit}
-                                    style={{ marginTop: 0, marginRight: 0 }}
-                                    >
-                                        {(permissionDetails?.role?.coding?.length>0 &&  permissionDetails?.role?.coding[0]?.display)  ?? '---'}
-                                    </Typography>
-                                </Grid>
-                                
-
-                                <IconButton
-                                    size="small"
-                                    onClick={toggleEditMode}
-                                    style={{ height: 24, width: 24 }}
-                                >
-                                    <CreateOutlinedIcon fontSize="small" />
-                                </IconButton>
-                            </div>
-                        )}
-                        {editMode && (
-                            <div style={{ padding: 14 }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={4}>
-                                        <TextField
-                                            id="permission-name"
-                                            onChange={(e) => handleState('username', e.target.value)}
-                                            value={permissionDetails.username}
-                                            placeholder="User Name *"
-                                            size="small"
-                                            fullWidth
-                                            style={{
-                                                fontFamily: "poppinsemibold",
-                                            }}
-                                            variant='outlined'
-                                            error={permissionDetails.error.username ? true : false}
-                                            helperText={permissionDetails.error.username ? permissionDetails.errorMsg.username : ''}
-
-                                            InputProps={{
-                                                style: {
-                                                    fontFamily: "poppinsemibold !important",
-                                                    fontSize: "1rem",
-                                                },
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-
-                                        <TextField
-                                            id="email-name"
-                                            onChange={(e) => handleState('email', e.target.value)}
-                                            value={permissionDetails?.email}
-                                            placeholder="Email *"
-                                            size="small"
-                                            disabled={permissionDetails?.selectUser?._id ? true: false}
-                                            fullWidth
-                                            variant='outlined'
-                                            style={{
-                                                fontFamily: "poppinsemibold",
-                                            }}
-                                            error={permissionDetails?.error.email ? true : false}
-                                            helperText={permissionDetails?.error.email ? permissionDetails?.errorMsg.email : ''}
-
-                                            InputProps={{
-                                                style: {
-                                                    fontFamily: "poppinsemibold !important",
-                                                    fontSize: "1rem",
-                                                },
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-
-                                        <TextField
-                                            id="designation-name"
-                                            onChange={(e) => handleState('designation', e.target.value)}
-                                            value={permissionDetails?.designation}
-                                            fullWidth
-                                            placeholder="Designation "
-                                            size="small"
-                                            style={{
-                                                fontFamily: "poppinsemibold",
-                                            }}
-                                            variant='outlined'
-                                            // error={permissionDetails?.error.designation_name ? true : false}
-                                            // helperText={permissionDetails?.error.designation_name ? permissionDetails?.errorMsg.permission_name : ''}
-
-                                            InputProps={{
-                                                style: {
-                                                    fontFamily: "poppinsemibold !important",
-                                                    fontSize: "1rem",
-                                                },
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Autocomplete
-                                            multiple={false}
-                                            fullWidth
-                                            size="small"
-                                            getOptionLabel={(option) => option.label}
-                                            value={
-                                                permissionDetails?.role ?? {}
-                                            }
-                                      
-                                            options={permissionDetails?.roleMaster || []}
-                                            onChange={(e, v) => handleState('role', v)}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label={false}
-                                                    // variant="outlined"
-                                                    placeholder="Select role"
-                                                    variant='outlined'
-                                                    size="small"
-                                                    error={permissionDetails.error.role ? true : false}
-                                                    helperText={permissionDetails.error.role ? permissionDetails.errorMsg.role : ''}
-                                                />
-                                            )}
-                                            classes={{
-                                                tag: classes.autocompleteTag
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
-
-                                <div style={{ margin: "8px 14px 8px 14px", display: "flex", justifyContent: "flex-end", gap: 12, alignItems: "center" }}>
-                                    <Button variant="outlined" onClick={toggleEditMode} style={{ height: 32, borderRadius: 8 }} >Cancel</Button>
-                                    <Button variant="contained" color={"primary"} style={{ height: 32, borderRadius: 8 }} onClick={() => submit()}>Update</Button>
-                                </div>
-
-                            </div>
-
-
-                        )}
-
-                    </div>
-
-                </Grid>
+                 {
+                     (permissionList?.length>0 || editMode) && <Grid item xs={8} style={{ overflow: "hidden" }}>
+                     <div
+                         style={{
+                             backgroundColor: "#fff",
+                             borderRadius: "10px",
+                             border: "1px solid #DCDCDC",
+                         }}
+                     >
+                         {!editMode && (
+                             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                                 <Grid item>
+                                     <Typography
+                                         className={classes.numbersEdit}
+                                         style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         Username
+                                     </Typography>
+                                     <Typography
+                                     className={classes.numbersEdit}
+                                     style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         {permissionDetails?.username ?? '---'}
+                                     </Typography>
+                                 </Grid>
+                                 <Grid item>
+                                     <Typography
+                                         className={classes.numbersEdit}
+                                         style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         Email
+                                     </Typography>
+                                     <Typography
+                                     className={classes.numbersEdit}
+                                     style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         {permissionDetails?.email ?? '---'}
+                                     </Typography>
+                                 </Grid>
+                                 <Grid item>
+                                     <Typography
+                                         className={classes.numbersEdit}
+                                         style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         Designation
+                                     </Typography>
+                                     <Typography
+                                     className={classes.numbersEdit}
+                                     style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         {permissionDetails?.designation ?? '---'}
+                                     </Typography>
+                                 </Grid>
+                                 <Grid item>
+                                     <Typography
+                                         className={classes.numbersEdit}
+                                         style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         Role name
+                                     </Typography>
+                                     <Typography
+                                     className={classes.numbersEdit}
+                                     style={{ marginTop: 0, marginRight: 0 }}
+                                     >
+                                         {(permissionDetails?.role?.coding?.length>0 &&  permissionDetails?.role?.coding[0]?.display)  ?? '---'}
+                                     </Typography>
+                                 </Grid>
+                                 
+ 
+                                 <IconButton
+                                     size="small"
+                                     onClick={toggleEditMode}
+                                     style={{ height: 24, width: 24 }}
+                                 >
+                                     <CreateOutlinedIcon fontSize="small" />
+                                 </IconButton>
+                             </div>
+                         )}
+                         {editMode && (
+                             <div style={{ padding: 14 }}>
+                                 <Grid container spacing={2}>
+                                     <Grid item xs={4}>
+                                         <TextField
+                                             id="permission-name"
+                                             onChange={(e) => handleState('username', e.target.value)}
+                                             value={permissionDetails.username}
+                                             placeholder="User Name *"
+                                             size="small"
+                                             fullWidth
+                                             style={{
+                                                 fontFamily: "poppinsemibold",
+                                             }}
+                                             variant='outlined'
+                                             error={permissionDetails.error.username ? true : false}
+                                             helperText={permissionDetails.error.username ? permissionDetails.errorMsg.username : ''}
+ 
+                                             InputProps={{
+                                                 style: {
+                                                     fontFamily: "poppinsemibold !important",
+                                                     fontSize: "1rem",
+                                                 },
+                                             }}
+                                         />
+                                     </Grid>
+                                     <Grid item xs={4}>
+ 
+                                         <TextField
+                                             id="email-name"
+                                             onChange={(e) => handleState('email', e.target.value)}
+                                             value={permissionDetails?.email}
+                                             placeholder="Email *"
+                                             size="small"
+                                             disabled={permissionDetails?.selectUser?._id ? true: false}
+                                             fullWidth
+                                             variant='outlined'
+                                             style={{
+                                                 fontFamily: "poppinsemibold",
+                                             }}
+                                             error={permissionDetails?.error.email ? true : false}
+                                             helperText={permissionDetails?.error.email ? permissionDetails?.errorMsg.email : ''}
+ 
+                                             InputProps={{
+                                                 style: {
+                                                     fontFamily: "poppinsemibold !important",
+                                                     fontSize: "1rem",
+                                                 },
+                                             }}
+                                         />
+                                     </Grid>
+                                     <Grid item xs={4}>
+ 
+                                         <TextField
+                                             id="designation-name"
+                                             onChange={(e) => handleState('designation', e.target.value)}
+                                             value={permissionDetails?.designation}
+                                             fullWidth
+                                             placeholder="Designation "
+                                             size="small"
+                                             style={{
+                                                 fontFamily: "poppinsemibold",
+                                             }}
+                                             variant='outlined'
+                                             // error={permissionDetails?.error.designation_name ? true : false}
+                                             // helperText={permissionDetails?.error.designation_name ? permissionDetails?.errorMsg.permission_name : ''}
+ 
+                                             InputProps={{
+                                                 style: {
+                                                     fontFamily: "poppinsemibold !important",
+                                                     fontSize: "1rem",
+                                                 },
+                                             }}
+                                         />
+                                     </Grid>
+                                     <Grid item xs={6}>
+                                         <Autocomplete
+                                             multiple={false}
+                                             fullWidth
+                                             size="small"
+                                             getOptionLabel={(option) => option.label}
+                                             value={
+                                                 permissionDetails?.role ?? {}
+                                             }
+                                       
+                                             options={permissionDetails?.roleMaster || []}
+                                             onChange={(e, v) => handleState('role', v)}
+                                             renderInput={(params) => (
+                                                 <TextField
+                                                     {...params}
+                                                     label={false}
+                                                     // variant="outlined"
+                                                     placeholder="Select role *"
+                                                     variant='outlined'
+                                                     size="small"
+                                                     error={permissionDetails.error.role ? true : false}
+                                                     helperText={permissionDetails.error.role ? permissionDetails.errorMsg.role : ''}
+                                                 />
+                                             )}
+                                             classes={{
+                                                 tag: classes.autocompleteTag
+                                             }}
+                                         />
+                                     </Grid>
+                                 </Grid>
+ 
+                                 <div style={{ margin: "8px 14px 8px 14px", display: "flex", justifyContent: "flex-end", gap: 12, alignItems: "center" }}>
+                                     <Button variant="outlined" onClick={toggleEditMode} style={{ height: 32, borderRadius: 8 }} >Cancel</Button>
+                                     <Button variant="contained" color={"primary"} style={{ height: 32, borderRadius: 8 }} onClick={() => submit()}>Update</Button>
+                                 </div>
+ 
+                             </div>
+ 
+ 
+                         )}
+ 
+                     </div>
+ 
+                 </Grid>
+                 }                           
+                
             </Grid>
         </div>
     );

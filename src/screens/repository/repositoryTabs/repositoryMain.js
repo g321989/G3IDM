@@ -26,131 +26,116 @@ import DeleteComponent from "./deleteComp";
 import Tree from "../../../components/tree";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "idm_binder";
-
+import { withRouter } from "react-router";
+import axios from 'axios';
 
 
 
 
 function RepositoryMain(props) {
   const classes = styles();
-  const [loader, setLoader] = useState(true);
-  const [statusCheck, setStatusCheck] = useState({
-    statusActive: {},
-  });
-  console.log("statusCheck", statusCheck);
-  const [pageData, setPageData] = useState([]);
-  const [pageData1, setPageData1] = useState([]);
 
-  const [formRepData, setFromRepData] = useState([]);
-  const [formRepData1, setFromRepData1] = useState([]);
-
-  const [reportsData, setReportsData] = useState([]);
-  const [reportsData1, setReportsData1] = useState([]);
-
-  const [processData, setprocessData] = useState([]);
-  const [processData1, setprocessData1] = useState([]);
-
-  const [open, setOpen] = React.useState(false);
-  const [deleteId, setDeleteId] = useState("");
-  const [selectedIndex, setSelectedIndex] = React.useState("Pages");
-
-
-
-
-
-
-
-
-
-
-
-  const handleClose = async (status) => {
-    const { alert } = props;
-    let { setSnack } = alert;
-    if (status) {
-      let sendPageData = {
-        entity: config.repositoryEntity,
-        metadataId: config.metadataid,
-        id: [deleteId],
-        keyvalue: ["rep_id"],
-      };
-      await deleteDocument(sendPageData)
-        .then((res) => {
-          if (res?.data?.data) {
-            setSnack({
-              ...alert,
-              horizontal: "right",
-              msg: "Document deleted successfully",
-              open: true,
-              autoHideDuration: 6000,
-              severity: "success",
-              vertical: "top",
-            });
-          }
-        })
-        .catch((error) => {
-          alert("Document not deleted.");
-        });
-      setOpen(false);
-      getRepositoryData();
-      return;
-    }
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    getRepositoryData();
-  }, []);
-
-  const getRepositoryData = async () => {
-    try {
-      let readDocParams = {
-        entity: config.repositoryEntity,
-      };
-      let getreadDocument = await readDocument(readDocParams);
-      setTimeout(() => {
-        // setLoader(false);
-        let filterForms = getreadDocument?.data?.result?.filter(
-          (i) => i.Repository.rep_type === "Forms"
-        );
-        let filterPages = getreadDocument?.data?.result?.filter(
-          (i) => i.Repository.rep_type === "Pages"
-        );
-        let filterReports = getreadDocument?.data?.result?.filter(
-          (i) => i.Repository.rep_type === "Reports"
-        );
-        let filterProcess = getreadDocument?.data?.result?.filter(
-          (i) => i.Repository.rep_type === "Processes"
-        );
-        setPageData(filterPages);
-        setPageData1(filterPages);
-
-        setFromRepData(filterForms);
-        setFromRepData1(filterForms);
-
-        setReportsData(filterReports);
-        setReportsData1(filterReports);
-
-        setprocessData(filterProcess);
-        setprocessData1(filterProcess);
-        setLoader(false);
-      }, 1000);
-    } catch (error) {
-      setPageData([]);
-    }
-  };
-
-  // useEffect(() => {
-  //   setInitialize();
-  // }, []);
   const dispatch = useDispatch();
 
   const repository_list = useSelector((state) => state?.repositorySlice?.repository_read?.data);
   const repositoryTree = repository_list?.length>0 ? repository_list[0] : {};
-  React.useLayoutEffect(() => {
-    // dispatch(actions.ROLE_READ());
-    dispatch(actions.REPOSITORY_READ_DOCUMENT())
-  }, []);
+  // React.useLayoutEffect(async() => {
+  //   // dispatch(actions.ROLE_READ());
+    
+  // }, []);
+  useEffect(async()=>{
+    if (props.location.search && props.location.search.length > 0) {
+      let params = new URLSearchParams(props.location.search)
+      // sessionStorage.setItem('metadataname', params.get('metaDataName'))
+      sessionStorage.setItem('metadata_id', params.get('metadata_id'))
+      let payload = {
+        db_name: `${config.qdm_dbname}`,
+        entity:"projectvstools",
+        filter:`projectvstools.metadataid=='${params.get('metadata_id')}'`,
+        return_fields: `{projectvstools}`
+
+      }
+      let project_details = {};
+      await axios
+      .post(`${config.api_url}/api/read_documents`,payload )
+      .then(async(response) => {
+        if(response?.data?.Code===201){
+          project_details = response?.data?.result[0]?.projectvstools;
+        } else {
+
+        }
+      })
+      .catch((error)=>{
+
+      });
+     
+      let project_info = {};
+      let tool_id = "";
+      if(project_details?.projectid){
+        let entity_tool = {
+          db_name: `${config.qdm_dbname}`,
+          entity:"tools",
+          filter:`tools.toolid=='88fd87fa-6163-4a05-ba19-5dee347e0f2d'`,
+          return_fields: `{tools}`
+        }
+        await axios
+        .post(`${config.api_url}/api/read_documents`,entity_tool )
+        .then(async(response) => {
+          if(response?.data?.Code===201){
+            
+            tool_id = response?.data?.result[0]?.tools?._id;
+          } else {
+  
+          }
+        })
+        .catch((error)=>{
+  
+        });
+        let metadataparams = {
+          db_name: `${config.qdm_dbname}`,
+          entity:"projectvstools",
+          filter:`projectvstools.projectid=='${project_details?.projectid}' and projectvstools.toolid=='${tool_id}'`,
+          return_fields: `{projectvstools}`
+        }
+        await axios
+        .post(`${config.api_url}/api/read_documents`,metadataparams )
+        .then(async(response) => {
+          if(response?.data?.Code===201){
+            sessionStorage.setItem('entity_metadata_id',response?.data?.result[0]?.projectvstools?.metadataid)
+            // project_details = response?.data?.result[0]?.projectvstools;
+          } else {
+  
+          }
+        })
+        .catch((error)=>{
+  
+        });
+        let project_payload =  {
+          db_name: `${config.qdm_dbname}`,
+          entity:"projects",
+          filter:`projects._id=='${project_details?.projectid}'`,
+          return_fields: `{projects}`
+        }
+        await axios
+        .post(`${config.api_url}/api/read_documents`,project_payload )
+        .then(async(response) => {
+          if(response?.data?.Code===201){
+            project_info = response?.data?.result[0]?.projects;
+            sessionStorage.setItem('dbname', project_details.dbname);
+          } else {
+  
+          }
+        })
+        .catch((error)=>{
+  
+        });
+      }
+    }
+    let dbnameParams =  {
+      dbname:sessionStorage.dbname
+    }
+    dispatch(actions.REPOSITORY_READ_DOCUMENT(dbnameParams))
+  },[]);
   return (
     <div className={classes.contentBox}>
       <Grid container direction="row" spacing={2}>
@@ -180,10 +165,10 @@ function RepositoryMain(props) {
         </Grid>
         
         {/* -------------------------------- delete ----------------------------------  */}
-        <DeleteComponent open={open} deleteClose={handleClose} />
+        {/* <DeleteComponent open={open} deleteClose={handleClose} /> */}
       </Grid>
     </div>
   );
 }
 
-export default withAllContexts(RepositoryMain);
+export default withRouter(withAllContexts(RepositoryMain));
