@@ -641,8 +641,8 @@ function Users(props) {
                                     }}
                                 >
                                     {loader
-                                        ? "User"
-                                        : permissionList?.length ?? 0 + " Users"}
+                                        ? 0 +"Users"
+                                        : permissionList?.length + 'Users' ?? 0 + " Users"}
                                 </Typography>
                                 <div style={{ flexGrow: 1 }}></div>
 

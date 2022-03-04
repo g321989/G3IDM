@@ -510,25 +510,26 @@ function Roles(props) {
         metadataId:sessionStorage.entity_metadata_id,
     }
     if(roleDetails?.select_role && Object.keys(roleDetails?.select_role)?.length>0){
-      // codeProperties = {
-      //   "_key":roleDetails.select_role._key,
-      //   "coding":[
-      //             {
-      //               ...roleDetails?.select_role?.coding[0],
-      //               "code": roleDetails?.role_id,
-      //               "display":roleDetails?.role_name ,
-      //             }
-      //         ]
-      
-        
-      // };
-         codeProperties = {
+      codeProperties = {
+        "_key":roleDetails.select_role._key,
+        "coding":[
+                  {
                     ...roleDetails?.select_role?.coding[0],
                     "code": roleDetails?.role_id,
-                    "display":roleDetails?.role_name,
-                    dbname:sessionStorage.dbname,
-                    metadataId:sessionStorage.entity_metadata_id,  
-          };
+                    "display":roleDetails?.role_name ,
+                  }
+              ],
+              dbname:sessionStorage.dbname,
+              metadataId:sessionStorage.entity_metadata_id,
+        
+      };
+        //  codeProperties = {
+        //             ...roleDetails?.select_role?.coding[0],
+        //             "code": roleDetails?.role_id,
+        //             "display":roleDetails?.role_name,
+        //             dbname:sessionStorage.dbname,
+        //             metadataId:sessionStorage.entity_metadata_id,  
+        //   };
       permissionProperties ={
         _key:roleDetails?._key,
         "role_id": roleDetails?.select_role?.id,
@@ -542,7 +543,7 @@ function Roles(props) {
     }
     if(roleDetails?.select_role && Object.keys(roleDetails?.select_role)?.length>0){
       try{
-        let codeUpsert =   await dispatch(actions.CODING_UPSERT(codeProperties));
+        let codeUpsert =   await dispatch(actions.CODABALE_CONCEPT_UPSERT(codeProperties));
         if(codeUpsert?.payload?.error || codeUpsert?.payload?.data?.Code !== 201){
           props.backdrop.setBackDrop({
             ...props.backdrop,

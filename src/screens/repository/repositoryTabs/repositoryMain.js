@@ -75,7 +75,7 @@ function RepositoryMain(props) {
         let entity_tool = {
           db_name: `${config.qdm_dbname}`,
           entity:"tools",
-          filter:`tools.toolid=='88fd87fa-6163-4a05-ba19-5dee347e0f2d'`,
+          filter:`tools.toolid=='${config.entityDesignerId}'`,
           return_fields: `{tools}`
         }
         await axios
