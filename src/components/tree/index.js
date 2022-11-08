@@ -68,6 +68,7 @@ export default function Tree(props) {
   const [orgCheck, setOrgCheck] = useState({
     orgData: props?.orgAccess ?? []
   });
+  
   const  [permissionCheck,setPermissionCheck] =  useState(props?.permission_list ?? {});
   const [updateComp,setUpdateComp] = useState(false);
   useEffect(()=>{
@@ -185,6 +186,46 @@ export default function Tree(props) {
     props.handlePermission(list);
 
   }
+
+  const isAnyChildRepoChecked = (id, parent_rep, permissionList) => {
+    if (permissionList?.length === 0) return false;
+
+    const res = permissionList
+      .filter(
+        (permission) => permission?.parent_rep === id || permission?.id === id
+      )
+      ?.every(
+        (item) =>
+          item?.permsnwrite &&
+          item?.permsnread &&
+          item?.permsnupdate &&
+          item?.permsndelete
+      );
+    return res;
+  };
+
+  const isAccessChecked = (actionName, _key, permissionList) => {
+    let is_check = false;
+    permissionList?.map((_) => {
+      if (_?._key === _key) {
+        is_check = _?.[actionName];
+      }
+      return is_check;
+    });
+    return is_check;
+  };
+
+  const handleAccessChange = (event, actionName, _key, permissionList) => {
+    const updatedPermissionList = permissionList?.map((item) => {
+      if (item?._key === _key) {
+        item[actionName] = event.target.checked;
+      }
+      return item;
+    });
+
+    props.handlePermission(updatedPermissionList);
+  };
+
   const checkFull = (_struct,_id,str,is_check=false) =>{
     _struct?.map((_,index)=>{
      
@@ -202,18 +243,30 @@ export default function Tree(props) {
 
     treelist =   Array.isArray(treelist) && treelist?.map((item,i)=>(
       <TreeItem
-      key={item.id}
-      nodeId={item.id}
+      key={item.rep_id}
+      nodeId={item.rep_id}
       //   icon={<img src={ico} alt="dummy" />}
       label={
         props.isCrudNeeded ? (
           <div className={classes.treeLabelFlex}>
             <Checkbox
-              checked={
-                checkFull(props.data,item.id,props.permission_list) == true ? true : false
+               checked={
+                    isAnyChildRepoChecked(
+                      item?.rep_id,
+                      item?.parent_rep,
+                      props?.permission_list
+                    )
+                    // isAnyChildRepoChecked(
+                    //   props.repository,
+                    //   item.id,
+                    //   props.permission_list
+                    // ) == true
+                    //   ? true
+                    //   : false
+                    // false
 
-                // Object.value(item.permission)?.some(_=>_===true)  ? true : false
-              }
+                    // Object.value(item.permission)?.some(_=>_===true)  ? true : false
+                  }
               onChange={(e) => handleFullCheck(e, item,props.permission_list)}
               // style={{ color: "#0071F2" }}
               // size="small"
@@ -224,41 +277,69 @@ export default function Tree(props) {
 
             />
             <div style={{ display: "flex", gap: 8 }}>
-              {item.name}
+              {item?.rep_name}
               {item?.component_type ? <Chip label={item?.component_type ?? ''} classes={{ root: classes.chipRoot }} /> :''} 
 
             </div>
             
             <div style={{ display: "flex" }}>
-              {["Write", "Read", "Update", "Delete"].map((x) => (
-                <div
-                  style={{
-                    minWidth: 60,
-                    maxWidth: 62,
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Checkbox
-                     checked={
-                      changeRepo(props.data,x,item.id,props.permission_list) == true ? true : false
-                    }
-                    onChange={(e) => handleRepo(x,item.id,props.permission_list)}
-                    // onChange={(e) => {
-                    //   debugger;
-                    //   e.stopPropagation();
-                    // }}
-                    // style={{
-                    //   color: "#0071F2",
-                    // }}
-                    color="primary"
-                    size="small"
-                    disabled={!props.editMode}
-                    // classes={{root: classes.checkboxRoot}}
-                  />
+                  {[
+                    "permsnwrite",
+                    "permsnread",
+                    "permsnupdate",
+                    "permsndelete",
+                  ].map((actionName) => (
+                    <div
+                      key={actionName}
+                      style={{
+                        minWidth: 60,
+                        maxWidth: 62,
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Checkbox
+                        checked={
+                          isAccessChecked(
+                            actionName,
+                            item?._key,
+                            props.permission_list
+                          ) === true
+
+                          // isAccessChecked(
+                          //   props.repository,
+                          //   x,
+                          //   item.id,
+                          //   props.permission_list
+                          // ) == true
+                          //   ? true
+                          //   : false
+                          // false
+                        }
+                        onChange={(event) => {
+                          // event.stopPropagation();
+                          handleAccessChange(
+                            event,
+                            actionName,
+                            item?._key,
+                            props.permission_list
+                          );
+                        }}
+                        // onChange={(e) => {
+                        //
+                        //   e.stopPropagation();
+                        // }}
+                        // style={{
+                        //   color: "#0071F2",
+                        // }}
+                        color="primary"
+                        size="small"
+                        disabled={!props.editMode}
+                        // classes={{root: classes.checkboxRoot}}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
           </div>
         ) : props.editMode ? (
           <div
@@ -277,14 +358,14 @@ export default function Tree(props) {
               classes={{ root: classes.checkboxRoot }}
             />
             <div style={{ display: "flex", gap: 8 }}>
-              {item.name}
+              {item.rep_name}
               {item?.component_type ? <Chip label={item?.component_type ?? ''} classes={{ root: classes.chipRoot }} /> :''} 
 
             </div>
           </div>
         ) : (
           <div style={{ display: "flex", gap: 8 }}>
-            {item.name}
+            {item.rep_name}
 
            {item?.component_type ? <Chip label={item?.component_type ?? ''} classes={{ root: classes.chipRoot }} /> :''} 
           </div>
@@ -321,16 +402,16 @@ export default function Tree(props) {
   );
 }
 
-function CloseSquare(props) {
-  return (
-    <SvgIcon
-      className="close"
-      fontSize="inherit"
-      style={{ width: 14, height: 14 }}
-      {...props}
-    >
-      {/* tslint:disable-next-line: max-line-length */}
-      <path d="M17.485 17.512q-.281.281-.682.281t-.696-.268l-4.12-4.147-4.12 4.147q-.294.268-.696.268t-.682-.281-.281-.682.294-.669l4.12-4.147-4.12-4.147q-.294-.268-.294-.669t.281-.682.682-.281.696 .268l4.12 4.147 4.12-4.147q.294-.268.696-.268t.682.281 .281.669-.294.682l-4.12 4.147 4.12 4.147q.294.268 .294.669t-.281.682zM22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0z" />
-    </SvgIcon>
-  );
-}
+// function CloseSquare(props) {
+//   return (
+//     <SvgIcon
+//       className="close"
+//       fontSize="inherit"
+//       style={{ width: 14, height: 14 }}
+//       {...props}
+//     >
+//       {/* tslint:disable-next-line: max-line-length */}
+//       <path d="M17.485 17.512q-.281.281-.682.281t-.696-.268l-4.12-4.147-4.12 4.147q-.294.268-.696.268t-.682-.281-.281-.682.294-.669l4.12-4.147-4.12-4.147q-.294-.268-.294-.669t.281-.682.682-.281.696 .268l4.12 4.147 4.12-4.147q.294-.268.696-.268t.682.281 .281.669-.294.682l-4.12 4.147 4.12 4.147q.294.268 .294.669t-.281.682zM22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0z" />
+//     </SvgIcon>
+//   );
+// }

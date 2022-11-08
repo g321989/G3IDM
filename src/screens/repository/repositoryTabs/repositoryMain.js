@@ -39,6 +39,7 @@ function RepositoryMain(props) {
 
   const repository_list = useSelector((state) => state?.repositorySlice?.repository_read?.data);
   const repositoryTree = repository_list?.length>0 ? repository_list[0] : {};
+  console.log(repositoryTree)
   // React.useLayoutEffect(async() => {
   //   // dispatch(actions.ROLE_READ());
     
@@ -134,8 +135,9 @@ function RepositoryMain(props) {
     let dbnameParams =  {
       dbname:sessionStorage.dbname
     }
-    dispatch(actions.REPOSITORY_READ_DOCUMENT(dbnameParams))
+    dispatch(actions.REPOSITORY_READ_DOCUMENT())
   },[]);
+  console.log("repository_list", repository_list, actions);
   return (
     <div className={classes.contentBox}>
       <Grid container direction="row" spacing={2}>

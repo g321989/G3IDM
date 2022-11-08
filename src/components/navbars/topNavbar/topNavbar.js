@@ -61,7 +61,7 @@ export const TopNavBar = (props) => {
 
                     <div className={classes.titleContainer}>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            Crayond Boilerplate
+                           IDM
                         </Typography>
                         <Typography variant="caption">
                             {`v${localStorage.getItem(LocalStorageKeys.version)}`}

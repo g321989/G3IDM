@@ -15,7 +15,6 @@
     "dotenv": "^10.0.0",
     "env-cmd": "^10.1.0",
     "graphql": "^15.5.1",
-    "idm_binder": "0.0.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
