@@ -232,9 +232,9 @@ function Roles(props) {
   //SEARCH FOR PROCESS
   const searchChange = (event) => {
     console.log(userRoles);
-    let val = event.target.value.toLowerCase();
+    let val = event.target.value?.toLowerCase();
     const filterDate = cloneroleList.filter((item) => {
-      return item.coding[0]?.display.toLowerCase().includes(val);
+      return item.coding[0]?.display?.toLowerCase().includes(val);
     });
     setRoleList(filterDate);
   };
@@ -1000,11 +1000,11 @@ function Roles(props) {
                         multiple
                         fullWidth
                         size="small"
-                        getOptionLabel={(option) => option.permissionName}
+                        getOptionLabel={(option) => option?.permissionName ?? {}}
                         value={
                           roleDetails?.permission  ?? []
                         }
-                        options={permissionList}
+                        options={permissionList ?? []}
                         onChange={(e, v) => handleState('permission',v) }
                         renderInput={(params) => (
                           <TextField

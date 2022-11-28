@@ -11,7 +11,7 @@ import AppDialog from "./App.dialog";
 import AppBackdrop from "./App.backdrop";
 import { Provider } from "react-redux";
 import { store as ReduxStore } from "./redux";
-
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <Provider store={ReduxStore}>

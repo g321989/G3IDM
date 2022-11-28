@@ -235,8 +235,8 @@ function PermissionList(props) {
     let val = event.target.value.toLowerCase();
     const filterDate = clonepermissionList.filter((item) => {
       return item?.permissionName
-        .toLowerCase()
-        .includes(val);
+        ?.toLowerCase()
+        ?.includes(val);
     });
     setPermissionList(filterDate)
   };

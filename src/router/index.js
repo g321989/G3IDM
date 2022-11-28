@@ -12,8 +12,9 @@ import {
   NotFound,
   Home,
   Login,
-  Repository
+
 } from './../screens';
+import AccessManagement from "../screens/accessManagement/AccessManagement";
 
 const RouterApp = (props) => {
 
@@ -23,7 +24,7 @@ const RouterApp = (props) => {
 
         {/* Login Route */}
         <Route exact path={Routes.idm}>
-          <Repository />
+          <AccessManagement />
         </Route>
         <Route exact path={'/'}>
           <Redirect to={Routes.idm} />

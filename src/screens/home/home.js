@@ -17,7 +17,7 @@ export const Home = props => {
     const classes = useStyles();
 
     const onLogOut = () => {
-        localStorage.removeItem(LocalStorageKeys.authToken);
+       // localStorage.removeItem(LocalStorageKeys.authToken);
         history.push(Routes.home);
     }
 

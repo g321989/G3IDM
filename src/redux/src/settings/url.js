@@ -1,0 +1,79 @@
+import { LocalStorageKeys } from "../../../utils";
+//export const dbName = process.env.REACT_APP_DB;
+export const dbName = localStorage.getItem(LocalStorageKeys.ProjectDbname);
+export const idm_metadata_dbname = process.env.REACT_APP_METADATA_DB_NAME;
+//export const metadataId = "feecaa8b-8daa-4737-867a-323622ad102d";
+export const metadataId = localStorage.getItem(LocalStorageKeys.metaDataId);
+
+export const idmDbName = process.env.REACT_APP_IDM_DB;
+
+export const __baseUrl__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/read_qdmqueries`;
+export const __uspsertUrl__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/upsert_document`;
+export const __update__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/updatedocument`;
+export const __readDocumentUrl__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/read_documents`;
+export const __deleteUrl__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/delete_document`;
+export const __softDelete__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_BASE_URL_HOST}:${process.env.REACT_APP_BASE_URL_PORT}/api/soft_delete`;
+
+export const __GetDispenseDuration__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/ScheduleGeneration/GetDispenseDuration`;
+export const __DispenseDoseStrength__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/UomConversion/CalculateDispenseDoseStrength`;
+export const __DoseScheduleGeneration__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/ScheduleGeneration/DoseScheduleGeneration`;
+export const __AvailableStock__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/Exchequer/StockAvailabilityCheck`;
+export const __AvailableApiKey__ = `${process.env.REACT_APP_STOCK_AVAILABLE_API_KEY}`;
+export const __AvailableSecretKey__ = `${process.env.REACT_APP_STOCK_AVAILABLE_SECRET_KEY}`;
+export const __VerifyActionUrl__ = `${process.env.REACT_APP_NIFI_API}/api/v1/verifyUserAction`;
+export const __ReVerifyActionUrl__ = `${process.env.REACT_APP_NIFI_API}/api/v1/filling/Reverify`;
+export const __FilledActionUrl__ = `${process.env.REACT_APP_NIFI_API}/api/v1/filling/Filled`;
+export const __DiscontinueActionUrl__ = `${process.env.REACT_APP_NIFI_API}/api/v1/verification/Discontinue`;
+export const __ReVerifyActionUrlChecking__ = `${process.env.REACT_APP_NIFI_API}/api/v1/checking/Reverify`;
+export const __CheckedActionUrlChecking__ = `${process.env.REACT_APP_NIFI_API}/api/v1/checking/Checked`;
+export const __ReVerifyActionUrlDispanse__ = `${process.env.REACT_APP_NIFI_API}/api/v1/dispense/Reverify`;
+export const __issueActionUrlDispanse__ = `${process.env.REACT_APP_NIFI_API}/api/v1/dispense/Issue`;
+export const __PrintLabel__ = `${process.env.REACT_APP_PDF_API}/api/generateReport`;
+export const __Getreportlist__ = `${process.env.REACT_APP_QUERY_URL}/GetReportList`;
+export const __ReportQueryExecution__ = `${process.env.REACT_APP_QUERY_URL}/ReportQueryExecution`;
+export const __OrderlinewithQueue__ = `${process.env.REACT_APP_NIFI_API}/api/v1/upsert/OrderlinewithQueue`;
+export const __GetOrderDate__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/ScheduleGeneration/GetOrderStartDate`;
+export const __ReturnDrug__ = `${process.env.REACT_APP_NIFI_API}/api/v1/insertQdmTransactionLog`;
+export const __ReturnMedication__ = `${process.env.REACT_APP_NIFI_API}/api/v1/returnMedicationOrder`;
+export const __ReturnMedicationApproavl__ = `${process.env.REACT_APP_NIFI_API}/api/v1/returnMedicationOrderRequestApproved`;
+export const __ReturnMedicationReject__ = `${process.env.REACT_APP_NIFI_API}/api/v1/returnMedicationOrderRequestRejected`;
+export const __OpenCart__ = `${process.env.REACT_APP_NIFI_API}/api/v1/multiSelectOpenCart`;
+export const __CloseCart__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/ScheduleGeneration/CartClose`;
+export const __GetDispenseDurationByCart__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_PHARMACY_URL_HOST}/api/ScheduleGeneration/GetDispenseDurationbyCart`;
+export const __TokenGeneration__ = `${process.env.REACT_APP_TOKEN_URL}/IDMJWTTokencreation`;
+export const __RolePermission__ = `${process.env.REACT_APP_TOKEN_URL}/GetPermissionforRoles`;
+export const __GetQueueList__ = `${process.env.REACT_APP_NIFI_API}/api/v1/getAllQueueList`;
+export const __GetDrugDispLocMaster__ = `${process.env.REACT_APP_NIFI_API}/api/v1/LoadDispesnsepharmacy`;
+export const __upsertPractitioner__ = `${process.env.REACT_APP_NIFI_API}/api/v1/upsertPractitioner`;
+export const __orderDefault__ = `${process.env.REACT_APP_NIFI_API}/api/v1/orderDefault`;
+
+// IDM Links
+export const __ListIDMRepositories__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/list_idmRepository`;
+export const __GetAllPermissions__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/getAllPermissions`;  
+export const __GetPermissionByID__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/get_permissionById`;
+export const __UpsertPermission__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/upsert_permission`;
+export const __DeletePermission__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/permissionSoftDelete`;
+export const __GetAllClientPermissions__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/getAllClientPermissions`; 
+export const __GetRoleById__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/get_roleById`;
+export const __RoleSoftDelete__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/roleSoftDelete`;
+export const __GetAllClientRoles__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/getAllClientRoles`; 
+
+export const __reIssueMedication__ = `${process.env.REACT_APP_NIFI_API}/api/v1/reIssue/Insertqueue`;
+export const __upsertQueueNo__ = `${process.env.REACT_APP_NIFI_API}/api/v1/upsertQueueNo`;
+export const __personUpsert__ =`${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/upsert_person`;
+export const __idmroleadd__ =`${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/add_role`;
+export const __SignInCreateUser__ =   `${process.env.REACT_APP_NIFI_API}/api/v1/atpcreateuser`;
+export const __SignInLogin__ =   `${process.env.REACT_APP_NIFI_API}/api/v1/atpsignin`;
+export const tenantid = process.env.REACT_APP_tenentID
+export const __ListIDMRepositoriesClientID__ = `${process.env.REACT_APP_BASE_URL_PROTOCAL}://${process.env.REACT_APP_IDM_URL}/v1/list_idmRepository`;
+export const ParentRepoId = process.env.REACT_APP_PARENTREPOI_FOR_CREATE_CLIENT_ADMIN
+// export const IDM_METADATA_ID = process.env.REACT_APP_IDM_METADATA_ID
+export const IDM_METADATA_ID =localStorage.getItem(LocalStorageKeys.idmmetadataid); 
+// export const METADATAID = process.env.REACT_APP_METADATAID
+export const METADATAID = localStorage.getItem(LocalStorageKeys.metaDataId);
+export const UPSERTREPO = process.env.REACT_APP_IDM_REPO
+export const SUPERADMINTENENTID = process.env.REACT_APP_SUPERADMIN_TENENTID
+export const ENTERPRICEID =  localStorage.getItem("EnterpriseID");
+export const FACILITYID =  localStorage.getItem("FacilityID");
+export const ORGANIZATIONID =  localStorage.getItem("OrganizationID");
+export const RESETKEYCLOCKUSER = `${process.env.REACT_APP_TOKEN_URL}/reset_keycloackuser_mail`

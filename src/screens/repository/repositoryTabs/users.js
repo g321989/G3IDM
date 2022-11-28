@@ -208,7 +208,7 @@ function Users(props) {
         let val = event.target.value.toLowerCase();
         const filterDate = clonepermissionList.filter((item) => {
             return item?.email
-                .toLowerCase()
+                ?.toLowerCase()
                 .includes(val);
         });
         setPermissionList(filterDate)
@@ -921,7 +921,7 @@ function Users(props) {
                                              multiple={false}
                                              fullWidth
                                              size="small"
-                                             getOptionLabel={(option) => option.label}
+                                             getOptionLabel={(option) => option?.label}
                                              value={
                                                  permissionDetails?.role ?? {}
                                              }
